@@ -1,0 +1,22 @@
+env:
+  PKG_NAME: hellow
+  UPLOAD_BASE_URL: https://api.bintray.com/content/satt3l/otus_cpp
+language: cpp
+before_script:
+  - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -qq
+  - sudo apt-get install libboost-test-dev -y
+script:
+  - cmake .
+  - cmake --build .
+  - cmake --build . --target test
+  - cmake --build . --target package
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
+  script:
+    - curl -T $PKG_NAME-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb -usatt3l:$BINTRAY_API_KEY "$UPLOAD_BASE_URL/$PKG_NAME/$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER/$PKG_NAME-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
