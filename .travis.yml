@@ -1,0 +1,18 @@
+language: cpp
+before_script:
+  - sudo apt-get install libboost-test-dev -y
+  - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -qq
+script:
+  - cmake .
+  - cmake --build .
+  - cmake --build . --target test
+  - cmake --build . --target package
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  on:
+    tags: true
+  script:
+    - curl -T hellow-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb -usatt3l:$BINTRAY_API_KEY "https://dl.bintray.com/satt3l/otus_cpp/hellow/$TRAVIS_BUILD_NUMBER/hellow-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
