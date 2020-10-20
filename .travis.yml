@@ -18,4 +18,4 @@ deploy:
     tags: true
     branch: HW1
   script:
-    - curl -T $PKG_NAME-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb -usatt3l:$BINTRAY_API_KEY "$UPLOAD_BASE_URL/$PKG_NAME/$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER/$PKG_NAME-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+    - curl -T $PKG_NAME-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb -usatt3l:$BINTRAY_API_KEY "$UPLOAD_BASE_URL/$PKG_NAME/$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER/$PKG_NAME-$TRAVIS_TAG.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
