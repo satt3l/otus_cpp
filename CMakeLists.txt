@@ -8,38 +8,25 @@ else()
   set(PROJECT_VERSION "0.0.1")
 endif()
 
-project(hellow VERSION "${PROJECT_VERSION}")
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
-configure_file(version.h.in version.h)
+project(ip_filter VERSION "${PROJECT_VERSION}")
 
-add_executable(hellow hellow.cpp)
+add_executable(ip_filter ip_filter.cpp)
 add_library(lib lib.cpp)
-add_executable(test_version test_version.cpp)
 
-set_target_properties(hellow lib test_version PROPERTIES
-  CXX_STANDARD_14
-  CXX_STANDARD_REQUIRED_ON
-)
-
-set_target_properties(test_version PROPERTIES
-  COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-  INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+set_target_properties(ip_filter lib PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED ON
 )
 
 target_include_directories(lib
-  PRIVATE "${CMAKE_BINARY_DIR}"
+    PRIVATE "${CMAKE_BINARY_DIR}" "${CMAKE_PARENT_DIR}"
 )
 
-target_link_libraries(hellow PRIVATE
+target_link_libraries(ip_filter PRIVATE
   lib
 )
 
-target_link_libraries(test_version PRIVATE
-  ${Boost_LIBRARIES}
-  lib
-)
-
-install(TARGETS hellow RUNTIME DESTINATION bin)
+install(TARGETS ip_filter RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
@@ -50,5 +37,3 @@ set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_CONTACT aturubar@gmail.com)
 
 include(CPack)
-enable_testing()
-add_test(test_version test_version)
