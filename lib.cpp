@@ -2,11 +2,12 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <cstdint>
 #include <array>
 #include "lib.h"
 
-IpAddr::IpAddr(std::string addr) {
+IpAddr::IpAddr(const std::string addr) {
 	int start = 0;
 	for (int i = 0; i < octet.size(); i++) {
 		int stop = addr.find_first_of('.', start);
@@ -20,28 +21,23 @@ IpAddr::IpAddr(std::string addr) {
 }
 
 std::ostream& operator << (std::ostream &out, const IpAddr& me) {
-	std::string output = "";
-	for(int i = 0; i < me.octet.size(); i++) {
-		output.append(std::to_string(int(me.octet[i])));
-		output.push_back('.');
-	}
-	out << output.substr(0, output.size() - 1);
-	
+	out << me.to_str();
 	return out;
 }
 
-std::string IpAddr::to_str() {
-	std::string output = "";
+std::string IpAddr::to_str() const {
+	std::stringstream output;
 	for(int i = 0; i < octet.size(); i++) {
-		output.append(std::to_string(int(octet[i])));
-		output.push_back('.');
+		output << int(octet[i]);
+		if (i != octet.size() - 1) {
+			output << '.';
+		}
 	}
-	output.pop_back();
-	return output;
+	return output.str();
 }
 
 bool IpAddr::any_octet_eq(uint8_t val) const {
-    for(int i = 0; i < octet.size(); i++) {
+	for(int i = 0; i < octet.size(); i++) {
 		if (octet[i] == val) {
 			return true;
 		}
@@ -50,11 +46,5 @@ bool IpAddr::any_octet_eq(uint8_t val) const {
 }
 
 bool IpAddr::operator<(const IpAddr& right) const {
-	for(int i = 0; i < octet.size(); i++) {
-		if (octet[i] == right.octet[i]){
-			continue;
-		} 
-		return (octet[i] < right.octet[i]);
-	}
-	return false;
+	return (octet < right.octet);
 }

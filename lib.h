@@ -5,8 +5,8 @@
 struct IpAddr {
 	std::array<uint8_t, 4> octet;
 
-	IpAddr(std::string addr);
-	std::string to_str();
+	IpAddr(const std::string addr);
+	std::string to_str() const;
 	friend std::ostream& operator << (std::ostream &out, const IpAddr& me); 
 	bool operator <(const IpAddr& right) const;
 	bool operator >(const IpAddr& right) const;

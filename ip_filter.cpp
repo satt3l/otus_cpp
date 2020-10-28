@@ -39,35 +39,35 @@ int main(int argc, char const *argv[])
 
         for(std::string line; std::getline(std::cin, line);)
         {
-			ip_pool.push_back(IpAddr(line));
+            ip_pool.push_back(IpAddr(line));
         }
         // TODO reverse lexicographically sort
-		std::sort(ip_pool.begin(), ip_pool.end(), [](IpAddr left, IpAddr right) { 
-			return (right < left); 
-		});
+        std::sort(ip_pool.begin(), ip_pool.end(), [](IpAddr left, IpAddr right) { 
+            return (right < left); 
+        });
 
-        for(auto ip : ip_pool)
+        for(const auto& ip : ip_pool)
         {
-			std::cout << ip << std::endl;
+            std::cout << ip << std::endl;
         }
-		
-		for(auto ip: ip_pool) {
-			if(ip.octet[0] == 1) {
-				std::cout << ip << std::endl;
-			}
-		}
+        
+        for(const auto& ip : ip_pool) {
+            if(ip.octet[0] == 1) {
+                std::cout << ip << std::endl;
+            }
+        }
 
-		for(auto ip : ip_pool) {
-			if(ip.octet[0] == 46 && ip.octet[1] == 70) {
-				std::cout << ip << std::endl;
-			}
-		}
+        for(const auto& ip : ip_pool) {
+            if(ip.octet[0] == 46 && ip.octet[1] == 70) {
+                std::cout << ip << std::endl;
+            }
+        }
 
-		for(auto ip : ip_pool) {
-			if(ip.any_octet_eq(46)) {
-				std::cout << ip << std::endl;
-			}
-		}
+        for(const auto& ip : ip_pool) {
+            if(ip.any_octet_eq(46)) {
+                std::cout << ip << std::endl;
+            }
+        }
         // 222.173.235.246
         // 222.130.177.64
         // 222.82.198.61
