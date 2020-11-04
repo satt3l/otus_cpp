@@ -12,3 +12,10 @@ struct IpAddr {
 	bool operator >(const IpAddr& right) const;
 	bool any_octet_eq(uint8_t val) const;
 };
+
+
+class IpAddrValidationError : public std::exception {
+	const char* what() const throw() {
+		return "IP address validation error.";
+	}
+};

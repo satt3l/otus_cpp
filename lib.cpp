@@ -5,18 +5,28 @@
 #include <sstream>
 #include <cstdint>
 #include <array>
+#include <regex>
 #include "lib.h"
+
 
 IpAddr::IpAddr(const std::string addr) {
 	int start = 0;
+	int stop = -1;
+	int value = 0;
+	std::smatch match;
+	std::regex ipv4_format("^(([0-9]{1,3}\\.){3}[0-9]{1,3})");
+	if (!std::regex_search(addr, match, ipv4_format)) {
+		throw IpAddrValidationError();
+	}
+	std::string ip = match.str(0);
 	for (int i = 0; i < octet.size(); i++) {
-		int stop = addr.find_first_of('.', start);
-		if(stop != std::string::npos){
-			octet[i] = std::stoi(addr.substr(start, stop));
-			start = stop + 1;
-		} else {
-			octet[i] = std::stoi(addr.substr(start, addr.size()));
+		stop = ip.find_first_of('.', start);
+		value = std::stoi(ip.substr(start, stop == std::string::npos ? addr.size() : stop));
+		if (value > 255 || value < 0) {
+			throw IpAddrValidationError();
 		}
+		octet[i] = value;
+		start = stop + 1;
 	}
 }
 

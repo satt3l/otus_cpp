@@ -39,7 +39,11 @@ int main(int argc, char const *argv[])
 
         for(std::string line; std::getline(std::cin, line);)
         {
-            ip_pool.push_back(IpAddr(line));
+            try {
+                ip_pool.push_back(IpAddr(line));
+            } catch (const IpAddrValidationError &e) {
+               std::cerr << line << " does not contain correct ipv4 address" << std::endl;
+            }
         }
         // TODO reverse lexicographically sort
         std::sort(ip_pool.begin(), ip_pool.end(), [](IpAddr left, IpAddr right) { 
